@@ -1,0 +1,406 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    background: #0f172a;
+    overflow: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    box-sizing: border-box;
+}
+
+#app {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ─── Navigation Number Buttons ─────────────────────────────────────────────── */
+
+.nav-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    background-color: #ef4444;
+    color: white;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.nav-number:active {
+    transform: scale(0.95);
+}
+
+.nav-number.answered {
+    background-color: #22c55e;
+}
+
+.nav-number.current {
+    border: 3px solid #fbbf24;
+    transform: scale(1.15);
+}
+
+/* ─── Input Accessibility ────────────────────────────────────────────────────── */
+
+input[type="radio"],
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+input[type="text"],
+input[type="password"],
+select,
+textarea {
+    font-size: 16px !important;
+    min-height: 44px !important;
+}
+
+/* Touch-friendly tap targets */
+button {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Prevent iOS default styling */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 8px;
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────────── */
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ─── Reusable Classes ───────────────────────────────────────────────────────── */
+
+.question-card {
+    animation: slideIn 0.4s ease;
+}
+
+.btn-animate {
+    transition: all 0.3s ease;
+}
+
+.btn-animate:active {
+    transform: scale(0.98);
+}
+
+.timer-warning {
+    animation: pulse 1s infinite;
+}
+
+.glassmorphism {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.shimmer {
+    animation: shimmer 2s infinite;
+}
+
+.option-selected {
+    background-color: #3b82f6 !important;
+    color: white;
+    border-color: #2563eb !important;
+}
+
+.toast {
+    animation: slideIn 0.3s ease;
+}
+
+.loader {
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid #60a5fa;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+/* Soal text selection allowed */
+.question-text {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ─── Mobile-First Exam Screen ───────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    html, body, #app, #examScreen {
+        zoom: 0.85;
+        transform-origin: top left;
+        width: 117.65%;
+    }
+
+    #examScreen {
+        flex-direction: column !important;
+    }
+
+    .exam-sidebar {
+        width: 100% !important;
+        height: auto !important;
+        border-right: none !important;
+        border-bottom: 1px solid #334155 !important;
+        padding: 6px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+    }
+
+    .question-nav-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, 32px) !important;
+        gap: 4px !important;
+        width: fit-content !important;
+    }
+
+    .nav-number {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 10px !important;
+    }
+
+    .exam-header {
+        flex-direction: column !important;
+        gap: 8px !important;
+        padding: 8px !important;
+    }
+
+    .exam-header-info {
+        flex-direction: column !important;
+        gap: 2px !important;
+    }
+
+    .exam-header-info h2 {
+        font-size: 14px !important;
+    }
+
+    .exam-header-info p {
+        font-size: 10px !important;
+    }
+
+    .exam-controls {
+        display: flex !important;
+        gap: 6px !important;
+        width: 100% !important;
+        align-items: center !important;
+    }
+
+    .exam-timer-container {
+        flex-shrink: 0 !important;
+        min-width: 70px !important;
+        text-align: center !important;
+    }
+
+    .exam-timer-label {
+        font-size: 8px !important;
+        margin: 0 !important;
+    }
+
+    #timer {
+        font-size: 14px !important;
+        margin: 0 !important;
+    }
+
+    #exitBtn {
+        flex-shrink: 0 !important;
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+        min-height: auto !important;
+        height: 32px !important;
+    }
+
+    #exitBtn i {
+        width: 14px !important;
+        height: 14px !important;
+    }
+
+    .exam-content {
+        padding: 10px 8px !important;
+        max-width: 100% !important;
+        flex: 1 !important;
+        overflow-y: auto !important;
+    }
+
+    .question-card {
+        padding: 12px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .question-number {
+        font-size: 12px !important;
+    }
+
+    .question-text {
+        font-size: 14px !important;
+        line-height: 1.4 !important;
+        margin-bottom: 10px !important;
+    }
+
+    .option-label {
+        padding: 10px !important;
+        margin-bottom: 8px !important;
+        border-radius: 6px !important;
+    }
+
+    .option-label input {
+        width: 18px !important;
+        height: 18px !important;
+        min-width: 18px !important;
+    }
+
+    .option-text {
+        font-size: 13px !important;
+        margin-left: 10px !important;
+    }
+
+    .exam-footer {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px !important;
+        padding: 8px !important;
+        border-top: 1px solid #334155 !important;
+        background: rgba(15, 23, 42, 0.8) !important;
+    }
+
+    .exam-footer button {
+        padding: 10px 8px !important;
+        font-size: 11px !important;
+        min-height: auto !important;
+        height: 40px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 3px !important;
+    }
+
+    .exam-footer button i {
+        width: 14px !important;
+        height: 14px !important;
+    }
+
+    #questionContent {
+        max-width: 100% !important;
+    }
+}
+
+@media (min-width: 641px) {
+    #examScreen {
+        flex-direction: row !important;
+    }
+
+    .exam-sidebar {
+        width: 100px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+
+    .question-nav-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+    }
+
+    .exam-header {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    .exam-controls {
+        display: flex !important;
+        gap: 16px !important;
+        align-items: center !important;
+    }
+
+    .exam-timer-container {
+        text-align: center !important;
+    }
+
+    .exam-content {
+        max-width: 800px !important;
+    }
+}
